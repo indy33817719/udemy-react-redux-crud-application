@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
+
 
 import { getEvent, deleteEvent, putEvent } from "../actions";
 
@@ -21,10 +24,15 @@ class EventsShow extends Component {
     renderField(field) {
         const { input, label, type, meta: { touched, error}} = field
         return (
-        <div>
-            <input {...input} placeholder={label} />
-            { touched && error && <span>{error}</span>}
-        </div>)
+            <TextField
+                hintText={label}
+                floatingLabelText={label}
+                type={type}
+                errorText={touched && error}
+                {...input}
+                fullWidth={true}
+            />
+        )
     }
 
     async onDeleteClick() {
@@ -40,6 +48,7 @@ class EventsShow extends Component {
 
     render() {
         const { handleSubmit, pristine, submmitting, invalid } = this.props
+        const style = { margin: 12}
 
 // submitボタンが押されたらonSubmit(handleSubmit関数)を実行する
         return (
@@ -47,9 +56,9 @@ class EventsShow extends Component {
                 <div><Field label="Title" name="title" type="text" component={ this.renderField} /></div>
                 <div><Field label="Body" name="body" type="text" component={ this.renderField} /></div>
                 <div>
-                    <input type="submit" value="Submit" disabled={pristine || submmitting || invalid} />
-                    <Link to="/">Cancel</Link>
-                    <Link to="/" onClick={this.onDeleteClick} >Delete</Link>
+                    <RaisedButton label="Submit" type="submit" style={style} disabled={pristine || submmitting || invalid} />
+                    <RaisedButton label="Cancel" style={style} containerElement={<Link to="/" />} />
+                    <RaisedButton label="Delete" style={style} onClick={this.onDeleteClick} />
                 </div>
 
             </form>
